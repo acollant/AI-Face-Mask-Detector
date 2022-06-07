@@ -1,7 +1,4 @@
-"""
-This file will expose all variables regarding the dataset.
-
-"""
+import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import random_split
 from torch.utils.data.dataloader import DataLoader
@@ -12,10 +9,18 @@ from params import batch_size
 
 torch.manual_seed(0)
 
-DATA_DIR = "./data"
+MULTIPLE_DATA_DIR = "./data/multiple"
+SINGLE_DATA_DIR = "./data/single"
 
 dataset = ImageFolder(
-    DATA_DIR,
+    MULTIPLE_DATA_DIR,
+    transform=transforms.Compose(
+        [transforms.Resize((150, 150)), transforms.ToTensor()]
+    ),
+)
+
+single_image = ImageFolder(
+    SINGLE_DATA_DIR,
     transform=transforms.Compose(
         [transforms.Resize((150, 150)), transforms.ToTensor()]
     ),
@@ -27,6 +32,5 @@ TRAIN_SIZE = len(dataset) - TEST_SIZE
 train_data, test_data = random_split(dataset, [TRAIN_SIZE, TEST_SIZE])
 
 train_dl = DataLoader(train_data, batch_size, shuffle=True)
-test_dl = DataLoader(test_data, batch_size * 2, shuffle=False)
-
-print(TRAIN_SIZE, TEST_SIZE)
+test_dl = DataLoader(test_data, batch_size, shuffle=False)
+single_test_dl = DataLoader(single_image, batch_size, shuffle=False)
