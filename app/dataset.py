@@ -7,7 +7,7 @@ from torchvision.datasets import ImageFolder
 
 from params import batch_size
 
-torch.manual_seed(0)
+# torch.manual_seed(0)
 
 MULTIPLE_DATA_DIR = "./data/multiple"
 SINGLE_DATA_DIR = "./data/single"
@@ -29,7 +29,9 @@ single_image = ImageFolder(
 TEST_SIZE = int(len(dataset) * 0.2)
 TRAIN_SIZE = len(dataset) - TEST_SIZE
 
-train_data, test_data = random_split(dataset, [TRAIN_SIZE, TEST_SIZE])
+train_data, test_data = random_split(
+    dataset, [TRAIN_SIZE, TEST_SIZE], generator=torch.Generator().manual_seed(40)
+)
 
 train_dl = DataLoader(train_data, batch_size, shuffle=True)
 test_dl = DataLoader(test_data, batch_size, shuffle=False)
