@@ -31,3 +31,40 @@ def construct_confusion_matrix(labels, predicted, filename, dataset=dataset):
     plt.figure(figsize=(12, 7))
     sn.heatmap(df_cm, annot=True)
     plt.savefig(f"{filename}.png")
+
+
+def train_epoch(model, device, dataloader, loss_func, optimizer):
+    train_loss, correct, total = 0.0, 0, 0
+    model.train()
+    for images, labels in dataloader:
+
+        images, labels = images.to(device), labels.to(device)
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = loss_func(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        train_loss += loss.item() * images.size(0)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+    return predicted, labels, correct, total, train_loss
+
+
+def validation_epoch(model, device, dataloader, loss_func, optimizer):
+    validation_loss, correct, total = 0.0, 0, 0
+    model.eval()
+    for images, labels in dataloader:
+
+        images, labels = images.to(device), labels.to(device)
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = loss_func(outputs, labels)
+        optimizer.step()
+        validation_loss += loss.item() * images.size(0)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+    return predicted, labels, correct, total, validation_loss
