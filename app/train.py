@@ -5,7 +5,7 @@ from sklearn.metrics import classification_report
 from torch.utils.data import DataLoader, SubsetRandomSampler
 
 from cnn import CNNV3
-from dataset import dataset, train_dl
+from dataset import dataset
 from params import batch_size, device, learning_rate, num_classes, num_epochs, splits
 from util import train_epoch, validation_epoch
 
@@ -25,7 +25,7 @@ for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset))
     train_loader = DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
     test_loader = DataLoader(dataset, batch_size=batch_size, sampler=test_sampler)
 
-    model = CNNV3(num_classes)
+    # model = CNNV3(num_classes)
     model.to(device)
 
     optimizer = torch.optim.SGD(
@@ -76,4 +76,4 @@ for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset))
         f"Classification Report for fold {fold+1}: \n {classification_report(fold_labels, fold_predicted, zero_division=1, target_names=dataset.classes)}"
     )
 
-torch.save(model, "./model/CNNV3_kfold.pb")
+torch.save(model, "./model/CNNV3_kfold_unbias.pb")
