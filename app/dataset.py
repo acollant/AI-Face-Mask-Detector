@@ -31,6 +31,6 @@ TRAIN_SIZE = len(dataset) - TEST_SIZE
 
 train_data, test_data = random_split(dataset, [TRAIN_SIZE, TEST_SIZE])
 
-train_dl = DataLoader(train_data, batch_size, shuffle=True)
+train_dl = DataLoader(train_data, TRAIN_SIZE, shuffle=True)
 test_dl = DataLoader(test_data, TEST_SIZE, shuffle=False)
 single_test_dl = DataLoader(single_image, batch_size, shuffle=False)

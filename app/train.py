@@ -72,8 +72,4 @@ for fold, (train_idx, val_idx) in enumerate(splits.split(np.arange(len(dataset))
         history["train_acc"].append(train_acc)
         history["test_acc"].append(test_acc)
 
-    print(
-        f"Classification Report for fold {fold+1}: \n {classification_report(fold_labels, fold_predicted, zero_division=1, target_names=dataset.classes)}"
-    )
-
-torch.save(model, "./model/CNNV3_kfold_unbias.pb")
+torch.save(model, "./model/CNNV3_kfold_gender.pb")
